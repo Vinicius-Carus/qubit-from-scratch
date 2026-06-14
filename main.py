@@ -1,0 +1,93 @@
+import math
+
+ZERO_STATE = [1, 0]
+ONE_STATE = [0, 1]
+
+SQRT_HALF = 1 / math.sqrt(2)
+
+X_GATE = [
+    [0, 1],
+    [1, 0],
+]
+
+Z_GATE = [
+    [1, 0],
+    [0, -1],
+]
+
+H_GATE = [
+    [SQRT_HALF, SQRT_HALF],
+    [SQRT_HALF, -SQRT_HALF],
+]
+
+H = ("H", H_GATE)
+Z = ("Z", Z_GATE)
+X = ("X", X_GATE)
+
+def validate_dimensions(state, gate=None):
+    if len(state) != 2:
+        raise ValueError("State must have exactly 2 amplitudes.")
+
+    if gate is not None:
+        if len(gate) != 2 or len(gate[0]) != 2 or len(gate[1]) != 2:
+            raise ValueError("Gate must be a 2x2 matrix.")
+
+
+def apply_gate(gate, state):
+    validate_dimensions(state=state, gate=gate)
+
+    return [
+        gate[0][0] * state[0] + gate[0][1] * state[1],
+        gate[1][0] * state[0] + gate[1][1] * state[1],
+    ]
+
+
+def calculate_probabilities(state):
+    validate_dimensions(state=state)
+
+    probability_zero = round((state[0] ** 2) * 100)
+    probability_one = round((state[1] ** 2) * 100)
+
+    return f"|0⟩ = {probability_zero}%\n|1⟩ = {probability_one}%"
+
+
+def is_normalized(state):
+    validate_dimensions(state=state)
+
+    probability_sum = state[0] ** 2 + state[1] ** 2
+
+    return math.isclose(probability_sum, 1.0, abs_tol=1e-9)
+
+
+def print_state(label, state):
+    print(label)
+    print("State:", state)
+    print("Probabilities:")
+    print(calculate_probabilities(state))
+
+    if is_normalized(state):
+        print("State is normalized.")
+    else:
+        print("State is not normalized.")
+
+    print()
+
+
+def main():
+
+    circuit = [H, Z, H, X]
+
+    print("Circuit: |0⟩ -> H -> Z -> H")
+    print()
+
+    initial_state = ZERO_STATE
+    previous_state = initial_state
+
+    print_state("Initial state:", initial_state)
+
+    for step in circuit:
+        previous_state = apply_gate(step[1], previous_state)
+        print_state(f"After {step[0]} gate:", previous_state)
+
+
+main()
