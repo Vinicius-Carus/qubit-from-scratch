@@ -73,11 +73,19 @@ def print_state(label, state):
     print()
 
 
+def format_circuit(initial_state_label, circuit):
+    gate_names = []
+
+    for gate in circuit:
+        gate_names.append(gate[0])
+
+    return f"{initial_state_label} -> " + " -> ".join(gate_names)
+
 def main():
 
     circuit = [H, Z, H, X]
 
-    print("Circuit: |0⟩ -> H -> Z -> H")
+    print(f"Circuit: {format_circuit("|0⟩", circuit)}")
     print()
 
     initial_state = ZERO_STATE
