@@ -20,9 +20,15 @@ H_GATE = [
     [SQRT_HALF, -SQRT_HALF],
 ]
 
+Y_GATE = [
+    [0, -1j],
+    [1j, 0]
+]
+
 H = ("H", H_GATE)
 Z = ("Z", Z_GATE)
 X = ("X", X_GATE)
+Y = ("Y", Y_GATE)
 
 def validate_dimensions(state, gate=None):
     if len(state) != 2:
@@ -41,12 +47,11 @@ def apply_gate(gate, state):
         gate[1][0] * state[0] + gate[1][1] * state[1],
     ]
 
-
 def calculate_probabilities(state):
     validate_dimensions(state=state)
 
-    probability_zero = round((state[0] ** 2) * 100)
-    probability_one = round((state[1] ** 2) * 100)
+    probability_zero = round((abs(state[0]) ** 2) * 100)
+    probability_one = round((abs(state[1]) ** 2) * 100)
 
     return f"|0⟩ = {probability_zero}%\n|1⟩ = {probability_one}%"
 
@@ -54,7 +59,7 @@ def calculate_probabilities(state):
 def is_normalized(state):
     validate_dimensions(state=state)
 
-    probability_sum = state[0] ** 2 + state[1] ** 2
+    probability_sum = abs(state[0]) ** 2 + abs(state[1]) ** 2
 
     return math.isclose(probability_sum, 1.0, abs_tol=1e-9)
 
@@ -83,7 +88,7 @@ def format_circuit(initial_state_label, circuit):
 
 def main():
 
-    circuit = [H, Z, H, X]
+    circuit = [Y, Y]
 
     print(f"Circuit: {format_circuit("|0⟩", circuit)}")
     print()

@@ -6,11 +6,11 @@ This project represents a single qubit as a vector and applies basic quantum gat
 
 ## What it does
 
-- Represents qubit states like `[1, 0]` and `[0, 1]`
-- Applies basic gates: X, Z and H
-- Calculates measurement probabilities
-- Checks if a state is normalized
-- Runs a simple sequence of gates as a circuit
+* Represents qubit states like `[1, 0]`, `[0, 1]` and complex amplitudes like `[0j, 1j]`
+* Applies basic gates: X, Y, Z and H
+* Calculates measurement probabilities using squared magnitudes
+* Checks if a state is normalized
+* Runs a simple sequence of gates as a circuit
 
 ## Gates implemented
 
@@ -21,6 +21,15 @@ Swaps the amplitudes of `|0⟩` and `|1⟩`.
 ```text
 X|0⟩ = |1⟩
 X|1⟩ = |0⟩
+```
+
+### Y Gate
+
+Swaps the amplitudes of `|0⟩` and `|1⟩`, adding an imaginary phase.
+
+```text
+Y|0⟩ = i|1⟩
+Y|1⟩ = -i|0⟩
 ```
 
 ### Z Gate
@@ -71,8 +80,11 @@ The goal is to understand the core idea:
 qubit = vector
 gate = matrix
 applying a gate = matrix-vector multiplication
+probability = squared magnitude of the amplitude
 ```
 
 ## Limitations
 
-This is not a full quantum simulator. It only supports one qubit, real amplitudes, and the X, Z and H gates.
+This is not a full quantum simulator. It only supports one-qubit circuits and the basic X, Y, Z and H gates.
+
+It does not support multiple qubits, tensor products, entanglement, CNOT gates or real quantum hardware.
