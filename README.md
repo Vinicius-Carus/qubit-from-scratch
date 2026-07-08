@@ -1,18 +1,56 @@
 # Qubit From Scratch
 
-A small educational project to understand the basics of quantum computing using plain Python.
+Educational quantum computing project built with plain Python.
 
-This project represents a single qubit as a vector and applies basic quantum gates as matrices.
+The goal is to understand the fundamentals without using a quantum framework:
 
-## What it does
+```text
+qubit = vector
+gate = matrix
+multi-qubit state = tensor product of vectors
+multi-qubit gate = tensor product of matrices
+applying a gate = matrix-vector multiplication
+probability = squared magnitude of the amplitude
+```
 
-* Represents qubit states like `[1, 0]`, `[0, 1]` and complex amplitudes like `[0j, 1j]`
-* Applies basic gates: X, Y, Z and H
-* Calculates measurement probabilities using squared magnitudes
-* Checks if a state is normalized
-* Runs a simple sequence of gates as a circuit
+## What It Does
 
-## Gates implemented
+* Represents qubits as vectors, like `[1, 0]` for `|0⟩` and `[0, 1]` for `|1⟩`.
+* Supports real and complex amplitudes, including states like `[0, 1j]`.
+* Applies quantum gates through matrix-vector multiplication.
+* Builds multi-qubit states with tensor products.
+* Builds multi-qubit gates with tensor products.
+* Calculates measurement probabilities for every computational basis state.
+* Checks if a state is normalized.
+* Formats and prints circuits step by step.
+
+## Project Structure
+
+```text
+functions/
+  constants.py  # Quantum states and gate constants.
+  quantum.py    # Core simulation functions.
+test/
+  test_apply_gate.py
+  test_formatting.py
+  test_state_output.py
+  test_tensor_helpers.py
+  test_tensor_product_matrix.py
+  test_tensor_product_vector.py
+  test_validate_dimensions.py
+main.py         # Example circuit execution.
+```
+
+## Gates Implemented
+
+### I Gate
+
+Identity gate. Keeps the qubit unchanged.
+
+```text
+I|0⟩ = |0⟩
+I|1⟩ = |1⟩
+```
 
 ### X Gate
 
@@ -49,42 +87,76 @@ H|0⟩ = 1/√2 (|0⟩ + |1⟩)
 H|1⟩ = 1/√2 (|0⟩ - |1⟩)
 ```
 
-## Example
+## Example Circuit
 
-Circuit:
+Circuits are represented as a list of steps. Each step contains one gate per qubit:
 
-```text
-|0⟩ -> H -> Z -> H
+```python
+qubits = [ZERO_STATE, ONE_STATE, ZERO_STATE]
+
+circuit = [
+    [I, X, I],
+    [X, X, X],
+]
 ```
 
-Result:
+The circuit formatter displays each step using tensor product notation:
 
 ```text
-|0⟩ = 0%
-|1⟩ = 100%
+|010⟩ -> I ⊗ X ⊗ I -> X ⊗ X ⊗ X
 ```
 
-## How to run
+For qubits that are valid but not exactly `|0⟩` or `|1⟩`, the label formatter uses `Q`:
+
+```text
+|0Q1⟩
+```
+
+## How To Run
+
+Install dependencies:
 
 ```bash
-python main.py
+poetry install
 ```
 
-## Purpose
+Run the example:
 
-I built this project to learn the basics of linear algebra and quantum computing from scratch, without using a quantum framework.
-
-The goal is to understand the core idea:
-
-```text
-qubit = vector
-gate = matrix
-applying a gate = matrix-vector multiplication
-probability = squared magnitude of the amplitude
+```bash
+poetry run python main.py
 ```
+
+Run tests:
+
+```bash
+poetry run pytest
+```
+
+## Core Functions
+
+* `validate_dimensions(state, gate=None)` validates state and gate dimensions.
+* `apply_gate(gate, state)` applies a gate matrix to a state vector.
+* `calculate_probabilities(state)` returns measurement probabilities.
+* `is_normalized(state)` checks if probability amplitudes sum to `1`.
+* `tensor_product_vector(vector_a, vector_b)` combines state vectors.
+* `tensor_product_matrix(matrix_a, matrix_b)` combines gate matrices.
+* `use_tensor_in_qubits(qubits)` builds a multi-qubit state.
+* `use_tensor_in_gates(gates)` builds a multi-qubit gate.
+* `format_qubits_label(qubits)` formats labels like `|010⟩`.
+* `format_circuit(initial_state_label, circuit)` formats the circuit flow.
+
+## Tests
+
+The project uses `pytest` and includes unit tests for:
+
+* dimension validation;
+* gate application;
+* vector tensor products;
+* matrix tensor products;
+* state probabilities and normalization;
+* circuit and qubit label formatting;
+* helper functions that build multi-qubit states and gates.
 
 ## Limitations
 
-This is not a full quantum simulator. It only supports one-qubit circuits and the basic X, Y, Z and H gates.
-
-It does not support multiple qubits, tensor products, entanglement, CNOT gates or real quantum hardware.
+This is still an educational simulator. It does not currently implement measurement collapse, entangling gates like CNOT, controlled gates, circuit optimization, noise models or real quantum hardware integration.

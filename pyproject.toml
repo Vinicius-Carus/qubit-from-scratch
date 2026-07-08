@@ -1,0 +1,24 @@
+[project]
+name = "qubit-from-scratch"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Vinicius-Carus",email = "viniciuscaruss@gmail.com"}
+]
+package-mode = false
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pytest (>=9.1.1,<10.0.0)"
+]
+
+[tool.poetry]
+package-mode = false
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
