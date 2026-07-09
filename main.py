@@ -1,11 +1,11 @@
-from functions.constants import H, I, X, ZERO_STATE, Y, ONE_STATE
+from functions.constants import H, I, ZERO_STATE, ONE_STATE, CNOT_GATE_2_QUBITS
 from functions.quantum import apply_gate, format_circuit, format_qubits_label, print_state, use_tensor_in_gates, use_tensor_in_qubits
 
 def main():
 
-    qubits = [ZERO_STATE, ONE_STATE, ZERO_STATE, ZERO_STATE, ZERO_STATE, ZERO_STATE, ZERO_STATE, ONE_STATE, ONE_STATE, ZERO_STATE] 
+    qubits = [ZERO_STATE, ZERO_STATE] 
 
-    circuit = [[I, X, I, I, I, H, I, H, X, H],[X, X, X, H, I, I, I, H, X, H]]
+    circuit = [[H, I]]
     initial_state_label = format_qubits_label(qubits)
 
     print(f"Circuit: {format_circuit(initial_state_label, circuit)}")
@@ -23,6 +23,10 @@ def main():
 
         previous_state = apply_gate(gate_formated, previous_state)
         print_state(f"After {gate_name} gate:", previous_state)
+    
+    # if len(qubits) == 2:
+    #     apply_cnot = apply_gate(state=previous_state, gate=CNOT_GATE_2_QUBITS)
+    #     print_state("After CNOT:", apply_cnot)
 
 
 main()

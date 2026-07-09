@@ -2,7 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
-## [2.0.0] - Current State
+## [2.1.0] - Measurement Support
+
+### Added
+
+* `generate_state_labels(state_len)` to create computational basis labels such as `|0⟩`, `|1⟩`, `|00⟩` and `|11⟩`.
+* `measure_state(state)` to perform probabilistic state measurement and return the measured basis label.
+* `run_measurements(state, shots)` to execute repeated measurements and return counts per basis state.
+* `CNOT_GATE_2_QUBITS` constant for two-qubit controlled-not experiments.
+* Unit tests for state label generation and deterministic measurement ranges using mocked random values.
+
+### Changed
+
+* Project version updated to `2.1.0`.
+* `main.py` example now focuses on a two-qubit setup with `H ⊗ I`.
+* `main.py` includes a prepared CNOT example for two-qubit circuits.
+
+### Fixed
+
+* Measurement selection now skips zero-probability states when the random draw is `0`.
+* Measurement now has a fallback to the last label to protect against rounding edge cases.
+
+## [2.0.0] - Multi-Qubit Support
 
 ### Added
 

@@ -1,4 +1,5 @@
 import math
+import random
 
 def validate_dimensions(state, gate=None):
     state_len = len(state)
@@ -167,3 +168,63 @@ def use_tensor_in_gates(gates):
         actual_gates = tensor_product_matrix(actual_gates, gates[gate_index])
 
     return actual_gates
+
+def generate_state_labels(state_len):
+    if state_len <= 1:
+        raise ValueError("State must have at least 2 amplitudes.")
+
+    num_qubits = math.log2(state_len)
+
+    if isinstance(num_qubits, float) and (not num_qubits.is_integer()):
+        raise ValueError("State length must be a power of 2.")
+
+    labels = []
+    label_size = int(num_qubits)
+
+    for state_index in range(state_len):
+        basis_state = format(state_index, f"0{label_size}b")
+        labels.append(f"|{basis_state}⟩")
+
+    return labels
+
+def measure_state(state):
+    validate_dimensions(state)
+
+    probabilities = calculate_probabilities(state)
+    labels = generate_state_labels(len(state))
+
+    random_value = random.random() * 100
+
+    cumulative_probability = 0
+    
+    for label, probability in zip(labels, probabilities):
+        cumulative_probability += probability
+
+        if random_value < cumulative_probability:
+            return label
+   
+    return labels[-1]
+
+
+def run_measurements(state, shots):
+    validate_dimensions(state)
+
+    if shots <= 0:
+        raise ValueError("Shots must be greater than 0.")
+
+    labels = generate_state_labels(len(state))
+
+    counts = {}
+
+    for label in labels:
+        counts[label] = 0
+
+    for _ in range(shots):
+        measured_label = measure_state(state)
+        counts[measured_label] += 1
+
+    return counts
+
+if __name__ == '__main__':
+    result = run_measurements([0.5, 0.5, 0.5, 0.5], 100)
+    print(result)
